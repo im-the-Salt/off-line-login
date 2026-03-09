@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>LOG IN</title>
+  <link rel="stylesheet" href="style.css?v=4" />
+</head>
+<body>
+  <div class="screen-container">
+
+    <!-- 🔐 登入畫面 -->
+    <section class="screen login-screen active" id="loginScreen">
+      <div class="login-box">
+        <h1>LOG IN</h1>
+        <small class="input-hint">...is that you?</small>
+
+        <input type="text" id="account" inputmode="latin" placeholder="請隨意輸入帳號名稱" maxlength="10" pattern="[A-Za-z0-9]+" />
+        <input type="password" id="password" inputmode="latin" placeholder="請隨意輸入密碼(限英數)" maxlength="10" pattern="[A-Za-z0-9]+" />
+
+        <button id="submitButton">登 入</button>
+        <p class="forgot-password">忘記密碼？</p>
+      </div>
+    </section>
+
+    <!-- 💻 終端機畫面 -->
+    <section class="screen main-screen" id="mainScreen">
+      <!-- ✅ 登入狀態浮空提示（移出 .terminal 之外） -->
+      <div class="terminal-status" id="loginBanner">
+      </div>
+
+
+
+
+      <div class="terminal">
+        <!-- ✅ 驗證進度條 -->
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+          <div class="progress-text" id="progressText">0 / 8 已完成</div>
+        </div>
+
+        <!-- ✅ 終端輸出區 -->
+        <div class="terminal-output" id="terminalOutput"> </div>
+
+      </div>
+    </section>
+  </div>
+
+  <!-- ✅ JS 模組 -->
+  <script type="module" src="./script.js?v=4"></script>
+</body>
+</html>
