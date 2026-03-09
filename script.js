@@ -1,30 +1,3 @@
-// ✅ Firebase 初始化與模組匯入
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
-import {
-  getFirestore,
-  serverTimestamp,
-  collection,
-  getDocs,
-  deleteDoc,
-  doc,
-  setDoc,
-  Timestamp,
-  addDoc
-} from "https://www.gstatic.com/firebasejs/11.4.0/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDIbsrJf628L8yAzi_iQAjUa-5M7FavdMc",
-  authDomain: "log-in-terminal.firebaseapp.com",
-  projectId: "log-in-terminal",
-  storageBucket: "log-in-terminal.firebasestorage.app",
-  messagingSenderId: "1039275590814",
-  appId: "1:1039275590814:web:257c004309b3012a8be78f"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-
 // ✅ 公用打字機函式
 async function typeTextBlock({
   lines = [],
@@ -140,46 +113,10 @@ const verificationFlags = {
   "510": false,  "233": false, "987": false
 };
 
-async function deleteOldUsers() {
-  const cutoff = new Date();
-  cutoff.setDate(cutoff.getDate() - 3);
-
-  const snapshot = await getDocs(collection(db, "users"));
-  const deletions = [];
-
-  snapshot.forEach(docSnap => {
-    const data = docSnap.data();
-    const timestamp = data.timestamp?.toDate?.();
-
-    if (timestamp && timestamp < cutoff) {
-      const del = deleteDoc(doc(db, "users", docSnap.id));
-      deletions.push(del);
-    }
-  });
-
-  await Promise.all(deletions);
-  console.log(`✅ 刪除了 ${deletions.length} 筆超過 3 天的 user 資料`);
-}
-
-async function deleteOldPrintJobs() {
-  const cutoff = new Date();
-  cutoff.setDate(cutoff.getDate() - 3); // 三天前的資料
-
-  const snapshot = await getDocs(collection(db, "print_jobs"));
-  snapshot.forEach(async (docSnap) => {
-    const data = docSnap.data();
-    if (data.timestamp && data.timestamp.toDate() < cutoff) {
-      await deleteDoc(doc(db, "print_jobs", docSnap.id));
-    }
-  });
-}
-
 
 // ✅ 登入流程與 Firebase 寫入
 window.addEventListener("DOMContentLoaded", () => {
 
-  deleteOldUsers();
-  deleteOldPrintJobs();
 
   const loginScreen = document.getElementById("loginScreen");
   const mainScreen = document.getElementById("mainScreen");
@@ -205,12 +142,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
     if (!account || !password) return alert("請輸入帳號與密碼！");
     if (!validPattern.test(password)) return alert("密碼需為英數字元！");
-
-    userAccount = account;
-    await setDoc(doc(db, "users", "ID_" + account), {
-      name: account,
-      timestamp: new Date()
-    });
 
     loginScreen.classList.remove("active");
     mainScreen.classList.add("active");
@@ -305,7 +236,7 @@ function showForgotPasswordPopup() {
     } else if (step === 2) {
       if (value === "He2Re80am429i") {
         overlay.remove();
-        queuePrintJob(rescuedId);
+        alert("✅ 成功輸入復原碼！你找回了你自己！");
       } else {
         warning.textContent = "錯誤的復原碼，請再試一次。";
         warning.style.display = "block";
@@ -370,19 +301,6 @@ function showCatConnectWarning(onConfirm) {
 }
 
 
-//隱藏結局
-async function queuePrintJob(account) {
-  try {
-    await addDoc(collection(db, "print_jobs"), {
-      account: account,
-      timestamp: Timestamp.now(),
-      printed: false
-    });
-    alert("✅成就解鎖！列印紙本成就！");
-  } catch (e) {
-    console.error("列印佇列加入失敗", e);
-  }
-}
 
 
 //置頂系統消息
@@ -1575,12 +1493,6 @@ function showFinalPopup() {
 
     popup.querySelector("button").onclick = async () => {
       overlay.remove();
-      await addDoc(collection(db, "print_jobs"), {
-        account: displayUser,
-        sessionType: "登入失敗",
-        timestamp: serverTimestamp(),
-        printed: false
-      });
       resetAllState();
     };
 
