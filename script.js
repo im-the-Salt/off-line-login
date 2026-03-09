@@ -1,10 +1,3 @@
-const now = new Date();
-const hh = String(now.getHours()).padStart(2, "0");
-const mm = String(now.getMinutes()).padStart(2, "0");
-const currentTime = `${hh}:${mm}`;
-const month = now.getMonth() + 1;
-const day = now.getDate();
-
 
 // ✅ 公用打字機函式
 async function typeTextBlock({
@@ -1477,6 +1470,13 @@ function showFinalPopup() {
     const popup = document.createElement("div");
     popup.className = "popup";
     
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2, "0");
+    const mm = String(now.getMinutes()).padStart(2, "0");
+    const currentTime = `${hh}:${mm}`;
+    const month = now.getMonth() + 1;
+    const day = now.getDate();
+
     const displayUser = typeof userAccount === "string" && userAccount ? userAccount : "unknown";
 
 
