@@ -1477,7 +1477,7 @@ function showFinalPopup() {
     const month = now.getMonth() + 1;
     const day = now.getDate();
 
-    const displayUser = typeof userAccount === "string" && userAccount ? userAccount : "unknown";
+    const displayUser = userAccount || document.getElementById("account").value || "unknown";
 
 
 
