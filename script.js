@@ -144,6 +144,8 @@ window.addEventListener("DOMContentLoaded", () => {
     if (!account || !password) return alert("請輸入帳號與密碼！");
     if (!validPattern.test(password)) return alert("密碼需為英數字元！");
 
+    userAccount = account;
+
     loginScreen.classList.remove("active");
     mainScreen.classList.add("active");
     terminalOutput.innerHTML = "";
