@@ -5,8 +5,6 @@ const currentTime = `${hh}:${mm}`;
 const month = now.getMonth() + 1;
 const day = now.getDate();
 
-const displayUser = typeof userAccount === "string" && userAccount ? userAccount : "unknown";
-
 
 // ✅ 公用打字機函式
 async function typeTextBlock({
@@ -1478,8 +1476,10 @@ function showFinalPopup() {
 
     const popup = document.createElement("div");
     popup.className = "popup";
+    
+    const displayUser = typeof userAccount === "string" && userAccount ? userAccount : "unknown";
 
-;
+
 
     popup.innerHTML = `
       <b>🔥系統⚠︎錯誤</b><br>
